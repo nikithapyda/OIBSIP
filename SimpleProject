@@ -1,0 +1,108 @@
+import java.util.Scanner;
+
+public class SimpleProject {
+    private static String username;
+    private static String password;
+    private static boolean loggedIn = false;
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        while (true) {
+            System.out.println("1. Login");
+            System.out.println("2. Update Profile and Password");
+            System.out.println("3. Select Answers for MCQs");
+            System.out.println("4. Logout");
+            System.out.println("5. Exit");
+
+            int choice = scanner.nextInt();
+            scanner.nextLine(); // Consume newline
+
+            switch (choice) {
+                case 1:
+                    login(scanner);
+                    break;
+                case 2:
+                    if (loggedIn) {
+                        updateProfile(scanner);
+                    } else {
+                        System.out.println("Please login first.");
+                    }
+                    break;
+                case 3:
+                    if (loggedIn) {
+                        selectMCQAnswers(scanner);
+                    } else {
+                        System.out.println("Please login first.");
+                    }
+                    break;
+                case 4:
+                    logout();
+                    break;
+                case 5:
+                    System.out.println("Exiting...");
+                    System.exit(0);
+                    break;
+                default:
+                    System.out.println("Invalid choice. Please try again.");
+            }
+        }
+    }
+
+    private static void login(Scanner scanner) {
+        System.out.println("Enter username:");
+        String enteredUsername = scanner.nextLine();
+
+        System.out.println("Enter password:");
+        String enteredPassword = scanner.nextLine();
+
+        // Simple validation for demo purposes
+        if ("demo".equals(enteredUsername) && "password".equals(enteredPassword)) {
+            username = enteredUsername;
+            password = enteredPassword;
+            loggedIn = true;
+            System.out.println("Login successful. Welcome, " + username + "!");
+        } else {
+            System.out.println("Invalid credentials. Please try again.");
+        }
+    }
+
+    private static void updateProfile(Scanner scanner) {
+        System.out.println("Updating profile...");
+        // Implement profile update logic here
+        System.out.println("Profile updated successfully.");
+    }
+
+    private static void selectMCQAnswers(Scanner scanner) {
+        System.out.println("Selecting answers for MCQs...");
+
+        Thread timerThread = new Thread(() -> {
+            try {
+                Thread.sleep(30000); // Sleep for 30 seconds
+                System.out.println("Time's up! Auto-submitting MCQ answers...");
+                // Implement auto-submit logic here
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+
+        timerThread.start();
+
+        // Implement MCQ selection logic here
+        System.out.println("Please answer the MCQs within 30 seconds.");
+
+        try {
+            timerThread.join(); // Wait for the timer thread to complete
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void logout() {
+        System.out.println("Logging out...");
+        loggedIn = false;
+        username = null;
+        password = null;
+        System.out.println("Logged out successfully.");
+    }
+}
